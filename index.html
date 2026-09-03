@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Break A Leg !! — Support & Privacy</title>
+<meta name="description" content="Support and privacy policy for Break A Leg !! — the GPS zombie chase game by Fragile Tendons." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --line: #1f1f1f;
+    --text: #ededed;
+    --muted: #8b8b8b;
+    --accent: #a3e635;
+    --danger: #ef4444;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --font: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--accent); color: #0a0a0a; }
+
+  a {
+    color: var(--text);
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 200ms var(--ease-out), color 200ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a:hover { background-size: 100% 1px; }
+  }
+
+  a:focus-visible, button:focus-visible, details:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- nav ---------- */
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0;
+  }
+
+  .wordmark {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-size: 15px;
+  }
+
+  .wordmark span { color: var(--accent); }
+
+  nav .links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+  nav .links a { color: var(--muted); }
+  @media (hover: hover) and (pointer: fine) {
+    nav .links a:hover { color: var(--text); }
+  }
+
+  /* ---------- hero ---------- */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 96px 40px;
+    margin: 24px 0 64px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(163, 230, 53, 0.07), transparent),
+      var(--surface);
+  }
+
+  /* faint street grid */
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 47px, rgba(255,255,255,0.04) 47px 48px),
+      repeating-linear-gradient(90deg, transparent 0 47px, rgba(255,255,255,0.04) 47px 48px);
+    pointer-events: none;
+  }
+
+  .hero > * { position: relative; }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+
+  .hero h1 em { font-style: normal; color: var(--accent); }
+
+  .hero p {
+    margin: 20px auto 0;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 17px;
+  }
+
+  /* player dot with radar pulse */
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .player {
+    width: 10px; height: 10px;
+    background: #fff;
+    left: 18%; top: 30%;
+    box-shadow: 0 0 12px rgba(255,255,255,0.7);
+  }
+
+  .player::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 50%;
+    animation: pulse 2.4s var(--ease-out) infinite;
+  }
+
+  @keyframes pulse {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    100% { transform: scale(4.5); opacity: 0; }
+  }
+
+  .zombie {
+    width: 7px; height: 7px;
+    background: var(--danger);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+  }
+
+  .z1 { right: 16%; top: 24%;  animation: drift1 17s ease-in-out infinite alternate; }
+  .z2 { right: 26%; bottom: 18%; animation: drift2 21s ease-in-out infinite alternate; }
+  .z3 { left: 30%; bottom: 14%; animation: drift3 14s ease-in-out infinite alternate; }
+
+  @keyframes drift1 { from { transform: translate(0, 0); } to { transform: translate(-46px, 30px); } }
+  @keyframes drift2 { from { transform: translate(0, 0); } to { transform: translate(-38px, -26px); } }
+  @keyframes drift3 { from { transform: translate(0, 0); } to { transform: translate(34px, -34px); } }
+
+  /* ---------- sections ---------- */
+
+  section { margin-bottom: 72px; }
+
+  .label {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-size: 28px;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+  .how div {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 20px;
+    background: var(--surface);
+  }
+
+  .how b { display: block; font-size: 15px; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .how span { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+  /* ---------- support ---------- */
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 26px;
+  }
+
+  .card p { color: var(--muted); font-size: 15px; max-width: 52ch; }
+
+  .mail {
+    display: inline-block;
+    margin-top: 18px;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 10px 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #0d0d0d;
+    transition: transform 160ms var(--ease-out), border-color 160ms var(--ease-out), background-size 200ms var(--ease-out);
+  }
+
+  .mail:active { transform: scale(0.97); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .mail:hover { border-color: var(--accent); }
+  }
+
+  details {
+    border-top: 1px solid var(--line);
+    padding: 16px 2px;
+  }
+
+  details:last-of-type { border-bottom: 1px solid var(--line); }
+
+  summary {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15px;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 160ms var(--ease-out);
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::after {
+    content: "+";
+    color: var(--muted);
+    font-weight: 400;
+    transition: transform 200ms var(--ease-out);
+  }
+
+  details[open] summary::after { transform: rotate(45deg); }
+
+  @media (hover: hover) and (pointer: fine) {
+    summary:hover { color: var(--accent); }
+  }
+
+  details p { padding-top: 10px; font-size: 14.5px; color: var(--muted); max-width: 58ch; }
+
+  /* ---------- privacy ---------- */
+
+  .privacy h3 {
+    font-size: 16px;
+    margin: 26px 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .privacy p, .privacy li { font-size: 14.5px; color: var(--muted); }
+
+  .privacy ul { padding-left: 20px; }
+  .privacy li { margin-bottom: 6px; }
+  .privacy li::marker { color: var(--accent); }
+
+  .updated { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+
+  /* ---------- footer ---------- */
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 32px 0 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--muted);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* ---------- entrance ---------- */
+
+  .rise {
+    animation: rise 500ms var(--ease-out) backwards;
+  }
+
+  .rise:nth-child(2) { animation-delay: 60ms; }
+  .rise:nth-child(3) { animation-delay: 120ms; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rise { animation: none; }
+    .player::after { animation: none; opacity: 0; }
+    .zombie { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+
+  @media (max-width: 560px) {
+    .how { grid-template-columns: 1fr; }
+    .hero { padding: 72px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="wordmark">Break A Leg <span>!!</span></div>
+    <div class="links">
+      <a href="#support">Support</a>
+      <a href="#privacy">Privacy</a>
+    </div>
+  </nav>
+
+  <header class="hero rise">
+    <div class="dot player"></div>
+    <div class="dot zombie z1"></div>
+    <div class="dot zombie z2"></div>
+    <div class="dot zombie z3"></div>
+    <h1>Outrun the horde.<br /><em>For real.</em></h1>
+    <p>Break A Leg !! turns your city into a survival zone. Zombies chase your actual GPS position — every meter you run is a meter you survive.</p>
+  </header>
+
+  <section class="rise">
+    <div class="how">
+      <div><b>Run</b><span>Zombies spawn on the real streets around you and hunt at real running speeds.</span></div>
+      <div><b>Outlast</b><span>Grab bullets, boosts and supply drops scattered across your city to stay alive.</span></div>
+      <div><b>Compete</b><span>Versus and co-op modes — survive alongside friends, or longer than them.</span></div>
+    </div>
+  </section>
+
+  <section id="support" class="rise">
+    <div class="label">Support</div>
+    <h2>We're here to help</h2>
+    <div class="card">
+      <p>Bug reports, feedback, account or data requests — email us and we'll get back to you, usually within a couple of days.</p>
+      <a class="mail" href="mailto:contact.breakaleg@gmail.com">contact.breakaleg@gmail.com</a>
+    </div>
+    <div style="height:28px"></div>
+    <details>
+      <summary>How do I start a run?</summary>
+      <p>Grant location permission, step outside, and press play. Zombies and items spawn on the map around your real position — start moving and they start chasing.</p>
+    </details>
+    <details>
+      <summary>Why does the app need background location?</summary>
+      <p>So a run can keep tracking while your screen is off or locked — the zombies don't stop when your display does. Location is only used while a run is active.</p>
+    </details>
+    <details>
+      <summary>How does multiplayer work?</summary>
+      <p>Versus and co-op matches run over the internet: your live position and run stats are shared with the other player in your match for the duration of the session. Nothing is shared after the match ends.</p>
+    </details>
+    <details>
+      <summary>How do I delete my data?</summary>
+      <p>Email us at the address above from the account you play with and we'll remove your multiplayer profile and stored stats within 30 days.</p>
+    </details>
+  </section>
+
+  <section id="privacy" class="privacy rise">
+    <div class="label">Privacy Policy</div>
+    <h2>Your data, plainly</h2>
+    <p class="updated">Last updated: September 3, 2026</p>
+
+    <h3>What the app uses</h3>
+    <ul>
+      <li><b>Precise location</b> — the core of the game. Your position draws you on the map and lets zombies chase you. Background location is used only while a run is active, so play continues with the screen off.</li>
+      <li><b>Multiplayer session data</b> — in versus and co-op matches, your live position and run stats are shared with the other player in your match via Google Firebase, for the duration of the match.</li>
+      <li><b>Game stats</b> — distances, scores and match results may be stored to operate multiplayer sessions and your game history.</li>
+      <li><b>Notifications</b> — local notifications only (run stats on your lock screen). We do not send remote push notifications.</li>
+    </ul>
+
+    <h3>What we never do</h3>
+    <ul>
+      <li>Sell or rent your data to anyone</li>
+      <li>Use third-party advertising or cross-app tracking SDKs</li>
+      <li>Track your location when no run or match is active</li>
+    </ul>
+
+    <h3>Retention & deletion</h3>
+    <p>Multiplayer session data is transient. Stored game stats are kept until you ask us to delete them — email <a href="mailto:contact.breakaleg@gmail.com">contact.breakaleg@gmail.com</a> and we'll remove them within 30 days.</p>
+
+    <h3>Children</h3>
+    <p>Break A Leg !! is not directed at children under 13, and we do not knowingly collect data from them.</p>
+
+    <h3>Changes</h3>
+    <p>If this policy changes, the updated version will be posted on this page with a new date above.</p>
+
+    <h3>Contact</h3>
+    <p>Fragile Tendons — <a href="mailto:contact.breakaleg@gmail.com">contact.breakaleg@gmail.com</a></p>
+  </section>
+
+  <footer>
+    <span>© 2026 Fragile Tendons</span>
+    <span>Break A Leg !! — run for your life</span>
+  </footer>
+
+</div>
+</body>
+</html>
