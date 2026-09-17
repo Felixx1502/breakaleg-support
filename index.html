@@ -3,22 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Break A Leg !! — Support & Privacy</title>
-<meta name="description" content="Support and privacy policy for Break A Leg !! — the GPS zombie chase game by Fragile Tendons." />
+<title>Break A Leg !! — Outrun the horde. For real.</title>
+<meta name="description" content="Break A Leg !! turns your run into a zombie chase. Zombies hunt your real GPS position on a dark map of your actual streets. Keep moving and they fall behind. Stop, and they won't." />
+<link rel="icon" type="image/png" href="assets/favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0a0a0a;
-    --surface: #111111;
-    --line: #1f1f1f;
-    --text: #ededed;
-    --muted: #8b8b8b;
-    --accent: #a3e635;
-    --danger: #ef4444;
+    --bg: #0b0b0d;
+    --surface: #131316;
+    --line: #232329;
+    --text: #f2f2f2;
+    --muted: #8f8f95;
+    --red: #ff4438;      /* zombie skull red   */
+    --yellow: #ffc24b;   /* ammo pickup        */
+    --purple: #b266f2;   /* slow-field pickup  */
+    --green: #2fbf4f;    /* charge bar         */
+    --cyan: #4fd8e0;     /* training mode      */
+    --display: "Archivo Black", "Arial Black", sans-serif;
+    --body: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-    --font: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,357 +33,820 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: var(--font);
+    font-family: var(--body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  ::selection { background: var(--accent); color: #0a0a0a; }
+  ::selection { background: var(--red); color: #fff; }
 
-  a {
-    color: var(--text);
-    text-decoration: none;
-    background-image: linear-gradient(var(--accent), var(--accent));
-    background-size: 0% 1px;
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    transition: background-size 200ms var(--ease-out), color 200ms var(--ease-out);
-  }
+  a { color: var(--text); text-decoration: none; }
 
-  @media (hover: hover) and (pointer: fine) {
-    a:hover { background-size: 100% 1px; }
-  }
-
-  a:focus-visible, button:focus-visible, details:focus-visible {
-    outline: 2px solid var(--accent);
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--red);
     outline-offset: 3px;
     border-radius: 2px;
   }
 
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
-  /* ---------- nav ---------- */
+  /* ================= nav ================= */
 
   nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 28px 0;
+    padding: 16px 28px;
+    background: linear-gradient(180deg, rgba(11,11,13,0.92), rgba(11,11,13,0));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .wordmark {
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: var(--display);
     font-size: 15px;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .wordmark span { color: var(--accent); }
+  .wordmark img { width: 26px; height: 26px; display: block; }
 
-  nav .links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
-  nav .links a { color: var(--muted); }
+  nav .links { display: flex; gap: 26px; font-size: 13.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  nav .links a { color: var(--muted); transition: color 160ms var(--ease-out); }
   @media (hover: hover) and (pointer: fine) {
     nav .links a:hover { color: var(--text); }
   }
 
-  /* ---------- hero ---------- */
+  .store-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    padding: 10px 18px;
+    border-radius: 6px;
+    transition: transform 160ms var(--ease-out), background 160ms var(--ease-out);
+  }
+  .store-btn:active { transform: scale(0.96); }
+  @media (hover: hover) and (pointer: fine) {
+    .store-btn:hover { background: #ff5c51; transform: translateY(-1px); }
+  }
+
+  @media (max-width: 700px) { nav .links { display: none; } }
+
+  @media (max-width: 520px) {
+    nav { padding: 12px 14px; }
+    .wordmark { font-size: 12.5px; gap: 8px; }
+    .wordmark img { width: 22px; height: 22px; }
+    .store-btn { padding: 8px 12px; font-size: 11px; }
+    .hero h1 { font-size: clamp(34px, 10.5vw, 44px); }
+    .hero-cta { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .hud-chip { font-size: 10.5px; }
+    .chip-tl { left: 16px; }
+    .chip-tr { right: 16px; }
+    .chase-hud { left: 16px; right: 16px; }
+    .chase-caption { left: 16px; right: 16px; }
+    .support-card { padding: 28px 22px; }
+  }
+
+  /* ================= hero ================= */
 
   .hero {
     position: relative;
+    height: 100svh;
+    min-height: 620px;
     overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 96px 40px;
-    margin: 24px 0 64px;
-    text-align: center;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 110%, rgba(163, 230, 53, 0.07), transparent),
-      var(--surface);
   }
 
-  /* faint street grid */
-  .hero::before {
-    content: "";
+  .hero canvas {
     position: absolute;
     inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, transparent 0 47px, rgba(255,255,255,0.04) 47px 48px),
-      repeating-linear-gradient(90deg, transparent 0 47px, rgba(255,255,255,0.04) 47px 48px);
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hero .veil {
+    position: absolute;
+    inset: 0;
     pointer-events: none;
+    background:
+      radial-gradient(ellipse 90% 65% at 50% 115%, rgba(11,11,13,0.95) 0%, transparent 55%),
+      linear-gradient(180deg, rgba(11,11,13,0.55) 0%, transparent 22%, transparent 60%, rgba(11,11,13,0.92) 100%);
   }
 
-  .hero > * { position: relative; }
-
-  .hero h1 {
-    font-size: clamp(40px, 7vw, 64px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1.05;
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 9vh;
   }
 
-  .hero h1 em { font-style: normal; color: var(--accent); }
-
-  .hero p {
-    margin: 20px auto 0;
-    max-width: 46ch;
+  .hud-chip {
+    position: absolute;
+    z-index: 2;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     color: var(--muted);
-    font-size: 17px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-
-  /* player dot with radar pulse */
-  .dot {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
+  .hud-chip b { color: var(--text); font-weight: 700; }
+  .hud-chip .dotpulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--red);
+    animation: pulse 1.5s var(--ease-out) infinite;
   }
-
-  .player {
-    width: 10px; height: 10px;
-    background: #fff;
-    left: 18%; top: 30%;
-    box-shadow: 0 0 12px rgba(255,255,255,0.7);
-  }
-
-  .player::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 50%;
-    animation: pulse 2.4s var(--ease-out) infinite;
-  }
+  .chip-tl { top: 84px; left: 28px; }
+  .chip-tr { top: 84px; right: 28px; }
+  @media (max-width: 700px) { .chip-tr { display: none; } }
 
   @keyframes pulse {
-    0%   { transform: scale(1);   opacity: 0.8; }
-    100% { transform: scale(4.5); opacity: 0; }
+    0%   { box-shadow: 0 0 0 0 rgba(255,68,56,0.55); }
+    100% { box-shadow: 0 0 0 12px rgba(255,68,56,0); }
   }
 
-  .zombie {
-    width: 7px; height: 7px;
-    background: var(--danger);
-    box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(44px, 8.4vw, 108px);
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
   }
 
-  .z1 { right: 16%; top: 24%;  animation: drift1 17s ease-in-out infinite alternate; }
-  .z2 { right: 26%; bottom: 18%; animation: drift2 21s ease-in-out infinite alternate; }
-  .z3 { left: 30%; bottom: 14%; animation: drift3 14s ease-in-out infinite alternate; }
+  .hero h1 .line { display: block; overflow: hidden; }
+  .hero h1 .line span { display: inline-block; transform: translateY(110%); animation: riseUp 900ms var(--ease-out) forwards; }
+  .hero h1 .line:nth-child(2) span { animation-delay: 120ms; color: var(--red); }
 
-  @keyframes drift1 { from { transform: translate(0, 0); } to { transform: translate(-46px, 30px); } }
-  @keyframes drift2 { from { transform: translate(0, 0); } to { transform: translate(-38px, -26px); } }
-  @keyframes drift3 { from { transform: translate(0, 0); } to { transform: translate(34px, -34px); } }
+  @keyframes riseUp { to { transform: translateY(0); } }
 
-  /* ---------- sections ---------- */
+  .hero p {
+    margin: 22px 0 30px;
+    max-width: 52ch;
+    color: #c9c9ce;
+    font-size: clamp(15px, 1.6vw, 18px);
+    opacity: 0;
+    animation: fadeIn 800ms var(--ease-out) 500ms forwards;
+  }
 
-  section { margin-bottom: 72px; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeIn 800ms var(--ease-out) 700ms forwards;
+  }
+
+  .hero-cta .ghost {
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 3px;
+    transition: color 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hero-cta .ghost:hover { color: var(--text); border-color: var(--muted); }
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 26px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    animation: hintFloat 2.6s ease-in-out infinite;
+  }
+
+  @keyframes hintFloat {
+    0%, 100% { transform: translate(-50%, 0); opacity: 0.5; }
+    50%      { transform: translate(-50%, 7px); opacity: 1; }
+  }
+
+  /* ================= sections shared ================= */
+
+  section { position: relative; padding: 110px 0; }
 
   .label {
     font-size: 12px;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 14px;
-    font-weight: 500;
+    color: var(--red);
+    margin-bottom: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
+  .label::before { content: ""; width: 26px; height: 2px; background: var(--red); }
 
   h2 {
-    font-size: 28px;
-    letter-spacing: -0.03em;
+    font-family: var(--display);
+    font-size: clamp(30px, 4.6vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .sub { color: var(--muted); max-width: 56ch; font-size: 16px; }
+
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ================= how it works ================= */
+
+  .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 56px; }
+
+  .how-card {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 30px 26px 28px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: border-color 240ms var(--ease-out), transform 240ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .how-card:hover { border-color: #3a3a42; transform: translateY(-4px); }
+  }
+
+  .how-card .num {
+    font-family: var(--display);
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+  }
+
+  .how-card img.item {
+    width: 46px; height: 46px;
+    margin: 26px 0 18px;
+    display: block;
+    filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5));
+  }
+
+  .how-card b {
+    display: block;
+    font-family: var(--display);
+    font-size: 19px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin-bottom: 10px;
+  }
+  .how-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  .how-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -30% -55% -30%;
+    height: 70%;
+    background: radial-gradient(ellipse at center, var(--glow, transparent) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 400ms var(--ease-out);
+    pointer-events: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .how-card:hover::after { opacity: 0.16; }
+  }
+
+  @media (max-width: 820px) { .how { grid-template-columns: 1fr; } }
+
+  /* ================= the chase (scroll-driven map) ================= */
+
+  .chase { padding: 0; background: #08080a; }
+
+  .chase-sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .chase-sticky canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .chase-hud {
+    position: absolute;
+    top: 84px; left: 28px; right: 28px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+  }
+
+  .chase-hud .stat { text-align: left; }
+  .chase-hud .stat .v {
+    font-family: var(--display);
+    font-size: clamp(20px, 3vw, 30px);
+    line-height: 1;
+  }
+  .chase-hud .stat .k {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .chase-hud .stat.warn .v { color: var(--red); }
+  .chase-hud .stat.gold .v { color: var(--yellow); }
+
+  .chase-caption {
+    position: absolute;
+    bottom: 8vh; left: 28px; right: 28px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .chase-caption .cap {
+    position: absolute;
+    bottom: 0; left: 0;
+    max-width: 34ch;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 450ms var(--ease-out), transform 450ms var(--ease-out);
+  }
+  .chase-caption .cap.on { opacity: 1; transform: translateY(0); }
+  .chase-caption b {
+    display: block;
+    font-family: var(--display);
+    font-size: clamp(18px, 2.4vw, 26px);
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .chase-caption span { color: #b9b9bf; font-size: 14.5px; }
+
+  /* ================= modes ================= */
+
+  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 56px; }
+
+  .mode-card {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    overflow: hidden;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+    transition: border-color 240ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .mode-card:hover { border-color: var(--mc, #3a3a42); }
+  }
+
+  .mode-card .runner {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 62%;
+    max-width: 230px;
+    opacity: 0.9;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6));
+    transition: transform 500ms var(--ease-out);
+    pointer-events: none;
+  }
+  .mode-card::before {
+    content: "";
+    position: absolute;
+    top: -20%; right: -25%;
+    width: 75%; height: 75%;
+    background: radial-gradient(circle at center, var(--mc, #3a3a42) 0%, transparent 68%);
+    opacity: 0.13;
+    pointer-events: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .mode-card:hover .runner { transform: translateY(-6px) rotate(-1.5deg); }
+  }
+
+  .mode-card .tag {
+    display: inline-block;
+    font-size: 10.5px;
     font-weight: 700;
-    margin-bottom: 18px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    width: fit-content;
+    background: var(--mc);
+    color: #0b0b0d;
+  }
+  .mode-card.locked .tag { background: #2c2c31; color: var(--muted); }
+
+  .mode-card b {
+    font-family: var(--display);
+    font-size: clamp(22px, 2.6vw, 30px);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .mode-card p { margin-top: 10px; font-size: 14px; color: var(--muted); max-width: 30ch; }
+
+  @media (max-width: 820px) {
+    .modes { grid-template-columns: 1fr; }
+    .mode-card { min-height: 340px; }
   }
 
-  .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  /* ================= field legend ================= */
 
-  .how div {
+  .field { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  .field-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 56px; }
+
+  .field-item {
     border: 1px solid var(--line);
     border-radius: 14px;
-    padding: 22px 20px;
-    background: var(--surface);
+    padding: 28px 24px;
+    background: var(--bg);
+    text-align: center;
+    transition: border-color 240ms var(--ease-out), transform 240ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .field-item:hover { border-color: var(--fc); transform: translateY(-4px); }
   }
 
-  .how b { display: block; font-size: 15px; margin-bottom: 6px; letter-spacing: -0.01em; }
-  .how span { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+  .field-item .orb {
+    width: 74px; height: 74px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    animation: bob 3.4s ease-in-out infinite;
+  }
+  .field-item:nth-child(2) .orb { animation-delay: 0.4s; }
+  .field-item:nth-child(3) .orb { animation-delay: 0.8s; }
+  .field-item:nth-child(4) .orb { animation-delay: 1.2s; }
 
-  /* ---------- support ---------- */
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
+  }
 
-  .card {
+  .field-item .orb img { width: 54px; height: 54px; }
+  .field-item .orb.ammo { background: rgba(255,194,75,0.12); box-shadow: 0 0 34px rgba(255,194,75,0.14); }
+  .field-item .orb.slow { background: rgba(178,102,242,0.12); box-shadow: 0 0 34px rgba(178,102,242,0.16); }
+  .field-item .orb.zombie { background: rgba(255,68,56,0.12); box-shadow: 0 0 34px rgba(255,68,56,0.16); animation: zombiePulse 1.5s ease-in-out infinite; }
+  .field-item .orb.charge {
+    background: rgba(47,191,79,0.1);
+    box-shadow: 0 0 34px rgba(47,191,79,0.14);
+  }
+
+  @keyframes zombiePulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.07); }
+  }
+
+  .charge-bar {
+    width: 22px; height: 44px;
+    border: 2px solid var(--green);
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+  }
+  .charge-bar::after {
+    content: "";
+    position: absolute;
+    left: 3px; right: 3px; bottom: 3px;
+    height: 65%;
+    background: var(--green);
+    border-radius: 2px;
+    animation: chargeFill 2.8s var(--ease-out) infinite alternate;
+  }
+  @keyframes chargeFill { from { height: 25%; } to { height: 82%; } }
+
+  .field-item b { display: block; font-family: var(--display); font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
+  .field-item p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+  @media (max-width: 820px) { .field-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .field-grid { grid-template-columns: 1fr; } }
+
+  /* ================= support ================= */
+
+  .support-card {
     border: 1px solid var(--line);
-    border-radius: 14px;
+    border-radius: 16px;
     background: var(--surface);
-    padding: 26px;
+    padding: 40px;
+    margin-top: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
   }
-
-  .card p { color: var(--muted); font-size: 15px; max-width: 52ch; }
+  .support-card p { color: var(--muted); font-size: 15px; max-width: 46ch; margin-top: 6px; }
 
   .mail {
-    display: inline-block;
-    margin-top: 18px;
-    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
     font-size: 15px;
-    padding: 10px 18px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: #0d0d0d;
-    transition: transform 160ms var(--ease-out), border-color 160ms var(--ease-out), background-size 200ms var(--ease-out);
+    padding: 14px 24px;
+    border-radius: 8px;
+    background: var(--red);
+    color: #fff;
+    transition: transform 160ms var(--ease-out), background 160ms var(--ease-out);
   }
-
   .mail:active { transform: scale(0.97); }
-
   @media (hover: hover) and (pointer: fine) {
-    .mail:hover { border-color: var(--accent); }
+    .mail:hover { background: #ff5c51; transform: translateY(-1px); }
   }
 
-  details {
+  details.faq {
     border-top: 1px solid var(--line);
-    padding: 16px 2px;
+    padding: 20px 2px;
   }
-
-  details:last-of-type { border-bottom: 1px solid var(--line); }
-
-  summary {
+  details.faq:last-of-type { border-bottom: 1px solid var(--line); }
+  details.faq summary {
     cursor: pointer;
-    font-weight: 500;
-    font-size: 15px;
+    font-weight: 700;
+    font-size: 16px;
     list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
     transition: color 160ms var(--ease-out);
   }
-
-  summary::-webkit-details-marker { display: none; }
-
-  summary::after {
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after {
     content: "+";
     color: var(--muted);
     font-weight: 400;
+    font-size: 20px;
     transition: transform 200ms var(--ease-out);
+    flex: none;
   }
-
-  details[open] summary::after { transform: rotate(45deg); }
-
+  details.faq[open] summary::after { transform: rotate(45deg); color: var(--red); }
   @media (hover: hover) and (pointer: fine) {
-    summary:hover { color: var(--accent); }
+    details.faq summary:hover { color: var(--red); }
   }
+  details.faq p { padding-top: 12px; font-size: 14.5px; color: var(--muted); max-width: 62ch; }
 
-  details p { padding-top: 10px; font-size: 14.5px; color: var(--muted); max-width: 58ch; }
+  .faq-wrap { margin-top: 56px; }
 
-  /* ---------- privacy ---------- */
+  /* ================= privacy ================= */
 
-  .privacy h3 {
-    font-size: 16px;
-    margin: 26px 0 8px;
-    letter-spacing: -0.01em;
-  }
-
+  .privacy h3 { font-size: 16px; margin: 30px 0 10px; letter-spacing: 0.01em; }
   .privacy p, .privacy li { font-size: 14.5px; color: var(--muted); }
+  .privacy ul { padding-left: 20px; margin-top: 6px; }
+  .privacy li { margin-bottom: 7px; }
+  .privacy li::marker { color: var(--red); }
+  .privacy a { color: var(--text); border-bottom: 1px solid var(--line); transition: border-color 160ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .privacy a:hover { border-color: var(--red); }
+  }
+  .updated { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
 
-  .privacy ul { padding-left: 20px; }
-  .privacy li { margin-bottom: 6px; }
-  .privacy li::marker { color: var(--accent); }
-
-  .updated { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-
-  /* ---------- footer ---------- */
+  /* ================= footer ================= */
 
   footer {
     border-top: 1px solid var(--line);
-    padding: 32px 0 48px;
+    padding: 40px 0 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 13px;
     color: var(--muted);
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 14px;
   }
-
-  /* ---------- entrance ---------- */
-
-  .rise {
-    animation: rise 500ms var(--ease-out) backwards;
-  }
-
-  .rise:nth-child(2) { animation-delay: 60ms; }
-  .rise:nth-child(3) { animation-delay: 120ms; }
-
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+  footer .foot-links { display: flex; gap: 20px; }
+  footer a { color: var(--muted); transition: color 160ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    footer a:hover { color: var(--text); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .rise { animation: none; }
-    .player::after { animation: none; opacity: 0; }
-    .zombie { animation: none; }
-    * { transition-duration: 0.01ms !important; }
-  }
-
-  @media (max-width: 560px) {
-    .how { grid-template-columns: 1fr; }
-    .hero { padding: 72px 24px; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .hero h1 .line span { transform: none; }
+    .hero p, .hero-cta { opacity: 1; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <nav>
-    <div class="wordmark">Break A Leg <span>!!</span></div>
-    <div class="links">
-      <a href="#support">Support</a>
-      <a href="#privacy">Privacy</a>
+<nav>
+  <div class="wordmark"><img src="assets/favicon.png" alt="" />BREAK A LEG !!</div>
+  <div class="links">
+    <a href="#how">How it works</a>
+    <a href="#chase">The chase</a>
+    <a href="#modes">Modes</a>
+    <a href="#support">Support</a>
+    <a href="#privacy">Privacy</a>
+  </div>
+  <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.felixx1502.breakaleg" target="_blank" rel="noopener">Get the app</a>
+</nav>
+
+<!-- ================= HERO: live night map ================= -->
+<header class="hero" id="top">
+  <canvas id="heroMap" aria-hidden="true"></canvas>
+  <div class="veil"></div>
+
+  <div class="hud-chip chip-tl"><span class="dotpulse"></span><b>LIVE</b> — horde active</div>
+  <div class="hud-chip chip-tr">GPS lock <b>±4 m</b></div>
+
+  <div class="wrap hero-inner">
+    <h1>
+      <span class="line"><span>Outrun the horde.</span></span>
+      <span class="line"><span>For real.</span></span>
+    </h1>
+    <p>Break A Leg !! turns your city into a survival zone. Zombies hunt your actual GPS position on a dark map of your real streets. Keep moving and they fall behind. Stop, and they won't.</p>
+    <div class="hero-cta">
+      <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.felixx1502.breakaleg" target="_blank" rel="noopener">Get it on Google Play</a>
+      <a class="ghost" href="#chase">Watch a run unfold</a>
     </div>
-  </nav>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</header>
 
-  <header class="hero rise">
-    <div class="dot player"></div>
-    <div class="dot zombie z1"></div>
-    <div class="dot zombie z2"></div>
-    <div class="dot zombie z3"></div>
-    <h1>Outrun the horde.<br /><em>For real.</em></h1>
-    <p>Break A Leg !! turns your city into a survival zone. Zombies chase your actual GPS position — every meter you run is a meter you survive.</p>
-  </header>
+<!-- ================= HOW IT WORKS ================= -->
+<section id="how">
+  <div class="wrap">
+    <div class="label reveal">How it works</div>
+    <h2 class="reveal">Your GPS<br />is the game</h2>
+    <p class="sub reveal">No treadmills, no faking steps, no couch victories. Zombies spawn on the real streets around you and chase at real running speeds.</p>
 
-  <section class="rise">
     <div class="how">
-      <div><b>Run</b><span>Zombies spawn on the real streets around you and hunt at real running speeds.</span></div>
-      <div><b>Outlast</b><span>Grab bullets, boosts and supply drops scattered across your city to stay alive.</span></div>
-      <div><b>Coming soon</b><span>Co-op mode — round up your crew and outrun one horde together.</span></div>
+      <div class="how-card reveal" style="--glow: var(--red)">
+        <span class="num">01</span>
+        <img class="item" src="assets/zombie-skull.png" alt="Zombie marker" />
+        <b>They spawn</b>
+        <p>Zombies appear around your live position, on your actual streets. Daytime brings more of them, faster. Night brings fewer, but they track you longer.</p>
+      </div>
+      <div class="how-card reveal" style="--glow: var(--yellow)">
+        <span class="num">02</span>
+        <img class="item" src="assets/powerup-ammo.png" alt="Ammo pickup" />
+        <b>You scavenge</b>
+        <p>Ammo crates and slow fields drop across your city. Grab bullets to shoot the close ones, slow fields to buy yourself a breath.</p>
+      </div>
+      <div class="how-card reveal" style="--glow: var(--purple)">
+        <span class="num">03</span>
+        <img class="item" src="assets/powerup-slow.png" alt="Slow field pickup" />
+        <b>You outrun</b>
+        <p>The phone buzzes harder as they close in. Eyes on the road, not the screen. Every meter you run is a meter you survive.</p>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="support" class="rise">
-    <div class="label">Support</div>
-    <h2>We're here to help</h2>
-    <div class="card">
-      <p>Bug reports, feedback, account or data requests — email us and we'll get back to you, usually within a couple of days.</p>
+<!-- ================= THE CHASE: scroll-driven route map ================= -->
+<section class="chase" id="chase">
+  <div class="chase-sticky">
+    <canvas id="chaseMap" aria-hidden="true"></canvas>
+
+    <div class="chase-hud">
+      <div class="stat"><div class="v" id="hudTime">0:00</div><div class="k">Time</div></div>
+      <div class="stat gold"><div class="v" id="hudDist">0 m</div><div class="k">Distance</div></div>
+      <div class="stat warn"><div class="v" id="hudNear">— m</div><div class="k">Nearest</div></div>
+    </div>
+
+    <div class="chase-caption">
+      <div class="cap" data-cap="0"><b>The run starts</b><span>You press start. The map goes dark. Somewhere behind you, the first dots turn red.</span></div>
+      <div class="cap" data-cap="1"><b>They pick up your scent</b><span>Trail dots stretch out behind every zombie as they lock onto your route and cut the corners.</span></div>
+      <div class="cap" data-cap="2"><b>Ammo crate ahead</b><span>Yellow means bullets. Line up your route, grab the crate, and tap a red skull when it gets close.</span></div>
+      <div class="cap" data-cap="3"><b>Slow field deployed</b><span>Purple light floods the block. Everything in the ring drags its feet. That's your window. Go.</span></div>
+      <div class="cap" data-cap="4"><b>Too close. Shove.</b><span>Your charge fills as you run. One tap throws the whole horde back off your heels.</span></div>
+      <div class="cap" data-cap="5"><b>You escaped</b><span>The buzz fades. The dots fall behind. This is what a real run looks like on Break A Leg !!</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MODES ================= -->
+<section id="modes">
+  <div class="wrap">
+    <div class="label reveal">Modes</div>
+    <h2 class="reveal">Pick your run</h2>
+    <p class="sub reveal">Story lets a brisk walk escape. Challenge sends them at 6:15/km. Or set their pace yourself.</p>
+
+    <div class="modes">
+      <div class="mode-card reveal" style="--mc: var(--red)">
+        <img class="runner" src="assets/runner-survival.png" alt="" />
+        <span class="tag">Out now</span>
+        <b>Survival</b>
+        <p>Outrun a whole horde. Shove them back, don't get cornered. Your city, after dark, hunted.</p>
+      </div>
+      <div class="mode-card reveal" style="--mc: var(--cyan)">
+        <img class="runner" src="assets/runner-training.png" alt="" />
+        <span class="tag">Out now</span>
+        <b>Training</b>
+        <p>Just you and a pacer at your goal pace. Stay ahead. No surprises, all speed.</p>
+      </div>
+      <div class="mode-card locked reveal">
+        <img class="runner" src="assets/runner-coop.png" alt="" style="filter: grayscale(1) brightness(0.7);" />
+        <span class="tag">Coming soon</span>
+        <b>Co-op</b>
+        <p>Round up your crew and outrun one horde together. In development now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FIELD LEGEND ================= -->
+<section class="field">
+  <div class="wrap">
+    <div class="label reveal">In the field</div>
+    <h2 class="reveal">Know your dots</h2>
+    <p class="sub reveal">The same markers you see in-game, on the same dark map. Learn them before they learn you.</p>
+
+    <div class="field-grid">
+      <div class="field-item reveal" style="--fc: var(--red)">
+        <div class="orb zombie"><img src="assets/zombie-skull.png" alt="Zombie" /></div>
+        <b style="color: var(--red)">Zombie</b>
+        <p>Red skull. It's hunting you. The buzz gets stronger the closer it gets.</p>
+      </div>
+      <div class="field-item reveal" style="--fc: var(--yellow)">
+        <div class="orb ammo"><img src="assets/powerup-ammo.png" alt="Ammo" /></div>
+        <b style="color: var(--yellow)">Ammo</b>
+        <p>Yellow crate. Grab it to reload. Tap a red skull to shoot it when it's close.</p>
+      </div>
+      <div class="field-item reveal" style="--fc: var(--purple)">
+        <div class="orb slow"><img src="assets/powerup-slow.png" alt="Slow field" /></div>
+        <b style="color: var(--purple)">Slow field</b>
+        <p>Purple hourglass. Step through it and the horde drags its feet for a while.</p>
+      </div>
+      <div class="field-item reveal" style="--fc: var(--green)">
+        <div class="orb charge"><div class="charge-bar" aria-hidden="true"></div></div>
+        <b style="color: var(--green)">Charge</b>
+        <p>Green bar. Fills as you run. Full? Tap to shove the whole horde back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SUPPORT ================= -->
+<section id="support">
+  <div class="wrap">
+    <div class="label reveal">Support</div>
+    <h2 class="reveal">We're here to help</h2>
+
+    <div class="support-card reveal">
+      <div>
+        <b style="font-family: var(--display); font-size: 20px; text-transform: uppercase;">Talk to a human</b>
+        <p>Bug reports, feedback, account or data requests — email us and we'll get back to you, usually within a couple of days.</p>
+      </div>
       <a class="mail" href="mailto:contact.breakaleg@gmail.com">contact.breakaleg@gmail.com</a>
     </div>
-    <div style="height:28px"></div>
-    <details>
-      <summary>How do I start a run?</summary>
-      <p>Grant location permission, step outside, and press play. Zombies and items spawn on the map around your real position — start moving and they start chasing.</p>
-    </details>
-    <details>
-      <summary>Why does the app need background location?</summary>
-      <p>So a run can keep tracking while your screen is off or locked — the zombies don't stop when your display does. Location is only used while a run is active.</p>
-    </details>
-    <details>
-      <summary>Is there a multiplayer mode?</summary>
-      <p>Co-op is in development — you'll see it marked "coming soon" on the mode select screen. We'll announce it when it ships.</p>
-    </details>
-    <details>
-      <summary>How do I delete my data?</summary>
-      <p>Everything is stored on your device — deleting the app deletes your stats and settings. No account, no server copy, nothing else to remove.</p>
-    </details>
-  </section>
 
-  <section id="privacy" class="privacy rise">
-    <div class="label">Privacy Policy</div>
-    <h2>Your data, plainly</h2>
-    <p class="updated">Last updated: September 3, 2026</p>
+    <div class="faq-wrap">
+      <details class="faq reveal">
+        <summary>How do I start a run?</summary>
+        <p>Grant location permission, step outside, and press play. Zombies and items spawn on the map around your real position — start moving and they start chasing.</p>
+      </details>
+      <details class="faq reveal">
+        <summary>Why does the app need background location?</summary>
+        <p>So a run can keep tracking while your screen is off or locked — the zombies don't stop when your display does. Location is only used while a run is active.</p>
+      </details>
+      <details class="faq reveal">
+        <summary>Is there a multiplayer mode?</summary>
+        <p>Co-op is in development — you'll see it marked "coming soon" on the mode select screen. We'll announce it when it ships.</p>
+      </details>
+      <details class="faq reveal">
+        <summary>How do I delete my data?</summary>
+        <p>Everything is stored on your device — deleting the app deletes your stats and settings. No account, no server copy, nothing else to remove.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
+<!-- ================= PRIVACY ================= -->
+<section id="privacy" class="privacy">
+  <div class="wrap">
+    <div class="label reveal">Privacy Policy</div>
+    <h2 class="reveal">Your data, plainly</h2>
+    <p class="updated reveal">Last updated: September 3, 2026</p>
+
+    <!-- CO-OP NOTE: when multiplayer ships, positions/stats move server-side. Update "What the app uses" + "What we never do" below, and bump the date. -->
     <h3>What the app uses</h3>
     <ul>
       <li><b>Precise location</b> — the core of the game. Your position draws you on the map and lets zombies chase you. Background location is used only while a run is active, so play continues with the screen off.</li>
@@ -394,7 +862,7 @@
       <li>Upload your location or stats to a server — they stay on your device</li>
     </ul>
 
-    <h3>Retention & deletion</h3>
+    <h3>Retention &amp; deletion</h3>
     <p>Your data lives on your device. Deleting the app deletes it. For any data request, email <a href="mailto:contact.breakaleg@gmail.com">contact.breakaleg@gmail.com</a>.</p>
 
     <h3>Children</h3>
@@ -405,13 +873,555 @@
 
     <h3>Contact</h3>
     <p>Fragile Tendons — <a href="mailto:contact.breakaleg@gmail.com">contact.breakaleg@gmail.com</a></p>
-  </section>
+  </div>
+</section>
 
-  <footer>
+<footer>
+  <div class="wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; width: 100%;">
     <span>© 2026 Fragile Tendons</span>
-    <span>Break A Leg !! — run for your life</span>
-  </footer>
+    <div class="foot-links">
+      <a href="https://play.google.com/store/apps/details?id=com.felixx1502.breakaleg" target="_blank" rel="noopener">Google Play</a>
+      <a href="mailto:contact.breakaleg@gmail.com">Contact</a>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
 
-</div>
+<script>
+(() => {
+'use strict';
+
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const TAU = Math.PI * 2;
+
+const imgs = {};
+const load = src => (imgs[src] = new Image(), imgs[src].src = src, imgs[src]);
+const zombieImg = load('assets/zombie-skull.png');
+const ammoImg   = load('assets/powerup-ammo.png');
+const slowImg   = load('assets/powerup-slow.png');
+const playerImg = load('assets/player-arrow.png');
+
+/* ---------- procedural dark street map (drawn once, cached) ---------- */
+
+function mulberry(seed) {
+  return () => {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function buildMap(w, h, seed) {
+  const c = document.createElement('canvas');
+  c.width = Math.max(1, w * DPR | 0); c.height = Math.max(1, h * DPR | 0);
+  const x = c.getContext('2d');
+  x.scale(DPR, DPR);
+  const rnd = mulberry(seed);
+
+  x.fillStyle = '#0e0e11';
+  x.fillRect(0, 0, w, h);
+
+  // minor street fabric
+  x.strokeStyle = '#18181e';
+  x.lineWidth = 3;
+  const step = 56;
+  for (let gx = -step; gx < w + step; gx += step) {
+    x.beginPath();
+    let px = gx + (rnd() - 0.5) * 18;
+    x.moveTo(px, -10);
+    for (let gy = 0; gy <= h + step; gy += step) x.lineTo(px + (rnd() - 0.5) * 22, gy);
+    x.stroke();
+  }
+  for (let gy = -step; gy < h + step; gy += step) {
+    x.beginPath();
+    let py = gy + (rnd() - 0.5) * 18;
+    x.moveTo(-10, py);
+    for (let gx = 0; gx <= w + step; gx += step) x.lineTo(gx, py + (rnd() - 0.5) * 22);
+    x.stroke();
+  }
+
+  // main avenues
+  const avenues = [];
+  x.lineWidth = 13; x.strokeStyle = '#23232b';
+  for (let gx = 120 + rnd() * 100; gx < w; gx += 200 + rnd() * 130) {
+    x.beginPath(); x.moveTo(gx, -10); x.lineTo(gx + (rnd() - 0.5) * 60, h + 10); x.stroke();
+    avenues.push({ v: true, p: gx });
+  }
+  for (let gy = 140 + rnd() * 100; gy < h; gy += 220 + rnd() * 140) {
+    x.beginPath(); x.moveTo(-10, gy); x.lineTo(w + 10, gy + (rnd() - 0.5) * 60); x.stroke();
+    avenues.push({ v: false, p: gy });
+  }
+  // avenue center lines
+  x.lineWidth = 1.5; x.strokeStyle = 'rgba(200,200,210,0.10)';
+  for (const a of avenues) {
+    x.beginPath();
+    if (a.v) { x.moveTo(a.p, 0); x.lineTo(a.p, h); }
+    else { x.moveTo(0, a.p); x.lineTo(w, a.p); }
+    x.stroke();
+  }
+
+  // faint district labels, like the game map
+  const names = ['SECTOR 04', 'OLD QUARTER', 'DIST 7', 'RIVERSIDE', 'KHU PHO 5', 'NORTH END', 'BLOCK 9', 'THE YARDS'];
+  x.font = '700 11px "Space Grotesk", sans-serif';
+  x.fillStyle = 'rgba(255,68,56,0.20)';
+  for (let i = 0; i < 8; i++) {
+    x.fillText(names[i % names.length], rnd() * (w - 90) + 20, rnd() * (h - 40) + 30);
+  }
+  return c;
+}
+
+/* ---------- helpers ---------- */
+
+function fitCanvas(cv) {
+  const r = cv.getBoundingClientRect();
+  cv.width = Math.max(1, r.width * DPR | 0);
+  cv.height = Math.max(1, r.height * DPR | 0);
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  return { ctx, w: r.width, h: r.height };
+}
+
+const drawMarker = (ctx, img, x, y, size, glow, glowColor) => {
+  if (glow) {
+    const g = ctx.createRadialGradient(x, y, 2, x, y, size * 1.15);
+    g.addColorStop(0, glowColor);
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, size * 1.15, 0, TAU); ctx.fill();
+  }
+  if (img.complete && img.naturalWidth) ctx.drawImage(img, x - size / 2, y - size / 2, size, size);
+  else { ctx.fillStyle = glowColor; ctx.beginPath(); ctx.arc(x, y, size / 2.6, 0, TAU); ctx.fill(); }
+};
+
+/* ================================================================
+   HERO — endless live chase
+================================================================ */
+
+const heroCv = document.getElementById('heroMap');
+let hero = null; // {ctx,w,h,map,player,zombies,pickups,px,py,lastTrail}
+let heroVisible = true;
+
+function heroReset() {
+  const f = fitCanvas(heroCv);
+  hero = {
+    ...f,
+    map: buildMap(f.w, f.h, 7),
+    t: Math.random() * 100,
+    player: { x: f.w * 0.44, y: f.h * 0.5, a: 0 },
+    zombies: [],
+    pickups: [],
+    trailClock: 0,
+    par: { x: 0, y: 0, tx: 0, ty: 0 }
+  };
+  for (let i = 0; i < 6; i++) {
+    const a = Math.random() * TAU;
+    hero.zombies.push({
+      x: f.w * 0.5 + Math.cos(a) * f.w * 0.35,
+      y: f.h * 0.5 + Math.sin(a) * f.h * 0.35,
+      sp: 26 + Math.random() * 22,
+      wob: Math.random() * TAU,
+      trail: []
+    });
+  }
+  const kinds = ['ammo', 'ammo', 'slow', 'slow'];
+  hero.pickups = kinds.map(k => ({
+    kind: k,
+    x: 0, y: 0, dead: 0
+  }));
+  hero.pickups.forEach(p => placePickup(p));
+}
+
+function placePickup(p) {
+  p.x = (0.08 + Math.random() * 0.84) * hero.w;
+  p.y = (0.14 + Math.random() * 0.7) * hero.h;
+  p.dead = 0;
+}
+
+function heroStep(dt) {
+  const H = hero;
+  H.t += dt;
+
+  // player: lissajous wander
+  const px = H.w * 0.44 + Math.sin(H.t * 0.21) * H.w * 0.24 + Math.sin(H.t * 0.09) * H.w * 0.06;
+  const py = H.h * 0.48 + Math.sin(H.t * 0.16 + 1.3) * H.h * 0.2 + Math.cos(H.t * 0.07) * H.h * 0.06;
+  H.player.a = Math.atan2(py - H.player.y, px - H.player.x);
+  H.player.x = px; H.player.y = py;
+
+  // parallax toward pointer
+  H.par.x += (H.par.tx - H.par.x) * 0.045;
+  H.par.y += (H.par.ty - H.par.y) * 0.045;
+
+  // zombies hunt
+  H.trailClock += dt;
+  const dropTrail = H.trailClock > 0.09;
+  if (dropTrail) H.trailClock = 0;
+  for (const z of H.zombies) {
+    const dx = H.player.x - z.x, dy = H.player.y - z.y;
+    const d = Math.hypot(dx, dy) || 1;
+    const wob = Math.sin(H.t * 1.4 + z.wob) * 0.7;
+    const ca = Math.cos(wob), sa = Math.sin(wob);
+    const vx = (dx / d * ca - dy / d * sa) * z.sp;
+    const vy = (dx / d * sa + dy / d * ca) * z.sp;
+    z.x += vx * dt; z.y += vy * dt;
+    if (d < 70) { z.x -= dx / d * (70 - d); z.y -= dy / d * (70 - d); }
+    if (d > Math.max(H.w, H.h) * 0.75) { z.x += dx / d * 40 * dt * 3; z.y += dy / d * 40 * dt * 3; }
+    if (dropTrail) { z.trail.push({ x: z.x, y: z.y }); if (z.trail.length > 5) z.trail.shift(); }
+  }
+
+  // pickups
+  for (const p of H.pickups) {
+    if (p.dead > 0) { p.dead -= dt; if (p.dead <= 0) placePickup(p); continue; }
+    if (Math.hypot(p.x - H.player.x, p.y - H.player.y) < 34) p.dead = 4;
+  }
+}
+
+function heroDraw() {
+  const H = hero, ctx = H.ctx;
+  ctx.clearRect(0, 0, H.w, H.h);
+  ctx.save();
+  ctx.translate(H.par.x, H.par.y);
+  ctx.drawImage(H.map, -30, -30, H.w + 60, H.h + 60);
+
+  // zombie trails
+  ctx.fillStyle = 'rgba(255,68,56,0.4)';
+  for (const z of H.zombies) {
+    z.trail.forEach((p, i) => {
+      ctx.globalAlpha = (i + 1) / z.trail.length * 0.35;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, TAU); ctx.fill();
+    });
+  }
+  ctx.globalAlpha = 1;
+  for (const z of H.zombies) drawMarker(ctx, zombieImg, z.x, z.y, 30, true, 'rgba(255,68,56,0.25)');
+
+  // pickups
+  for (const p of H.pickups) {
+    if (p.dead > 0) continue;
+    const pulse = 0.5 + Math.sin(H.t * 3 + p.x) * 0.2;
+    if (p.kind === 'ammo') drawMarker(ctx, ammoImg, p.x, p.y, 28, true, `rgba(255,194,75,${0.12 + pulse * 0.12})`);
+    else drawMarker(ctx, slowImg, p.x, p.y, 28, true, `rgba(178,102,242,${0.12 + pulse * 0.12})`);
+  }
+
+  // player
+  ctx.save();
+  ctx.translate(H.player.x, H.player.y);
+  ctx.rotate(H.player.a + Math.PI / 2);
+  drawMarker(ctx, playerImg, 0, 0, 26, true, 'rgba(255,255,255,0.18)');
+  ctx.restore();
+  ctx.restore();
+}
+
+/* ================================================================
+   THE CHASE — scroll-driven run
+================================================================ */
+
+const chaseSec = document.querySelector('.chase');
+const chaseCv = document.getElementById('chaseMap');
+const hudTime = document.getElementById('hudTime');
+const hudDist = document.getElementById('hudDist');
+const hudNear = document.getElementById('hudNear');
+const caps = [...document.querySelectorAll('.chase-caption .cap')];
+
+chaseSec.style.height = REDUCED ? '100vh' : '460vh';
+
+let C = null; // chase state
+let chaseVisible = false;
+
+// route in fractional coords (S-curve across the city)
+const ROUTE = [
+  [0.06, 0.82], [0.18, 0.72], [0.26, 0.78], [0.36, 0.6], [0.44, 0.64],
+  [0.52, 0.44], [0.62, 0.5], [0.68, 0.3], [0.78, 0.34], [0.86, 0.18], [0.94, 0.14]
+];
+const PICKUP_AMMO = 0.44, PICKUP_SLOW = 0.62, SHOVE_AT = 0.8;
+
+function chaseReset() {
+  const f = fitCanvas(chaseCv);
+  const pts = ROUTE.map(([fx, fy]) => ({ x: fx * f.w, y: fy * f.h }));
+  const segs = []; let total = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const l = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+    segs.push({ a: pts[i - 1], b: pts[i], l, start: total });
+    total += l;
+  }
+  C = {
+    ...f,
+    map: buildMap(f.w, f.h, 23),
+    pts, segs, total,
+    player: { x: pts[0].x, y: pts[0].y, a: 0 },
+    zombies: [],
+    rings: [],          // slow fields + shove shockwaves
+    shots: [],          // bullet impacts
+    progress: 0,
+    fired: { ammo: false, slow: false, shove: false },
+    lastP: 0
+  };
+  // zombies start scattered off-route
+  const starts = [[0.05, 0.3], [0.3, 0.9], [0.55, 0.12], [0.72, 0.75], [0.92, 0.5]];
+  starts.forEach(([fx, fy], i) => {
+    C.zombies.push({
+      x: fx * f.w, y: fy * f.h,
+      vx: 0, vy: 0,
+      maxSp: 66 + i * 9,
+      trail: [],
+      clock: 0,
+      slowUntil: 0, shovedUntil: 0
+    });
+  });
+}
+
+function routePoint(p) {
+  const d = Math.min(Math.max(p, 0), 1) * C.total;
+  for (const s of C.segs) {
+    if (d <= s.start + s.l) {
+      const t = (d - s.start) / s.l;
+      return {
+        x: s.a.x + (s.b.x - s.a.x) * t,
+        y: s.a.y + (s.b.y - s.a.y) * t,
+        a: Math.atan2(s.b.y - s.a.y, s.b.x - s.a.x)
+      };
+    }
+  }
+  const last = C.segs[C.segs.length - 1];
+  return { x: last.b.x, y: last.b.y, a: Math.atan2(last.b.y - last.a.y, last.b.x - last.a.x) };
+}
+
+function chaseScroll() {
+  const r = chaseSec.getBoundingClientRect();
+  const span = r.height - window.innerHeight;
+  C.progress = Math.min(Math.max(-r.top / Math.max(span, 1), 0), 1);
+  const dbg = new URLSearchParams(location.search).get('p'); // debug: fixed progress
+  if (dbg !== null) C.progress = Math.min(Math.max(parseFloat(dbg) || 0, 0), 1);
+}
+// debug: ?to=<selector> jumps without relying on URL fragments (headless-friendly)
+const qs = new URLSearchParams(location.search);
+const toSel = qs.get('to');
+if (toSel) addEventListener('load', () => setTimeout(() => {
+  document.documentElement.style.scrollBehavior = 'auto';
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  heroVisible = true; chaseVisible = true;
+  document.querySelector(toSel.replace(/[^\w#-]/g, ''))?.scrollIntoView({ behavior: 'auto' });
+}, 300));
+
+const fmtTime = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+function chaseStep(dt, now) {
+  chaseScroll();
+  const p = C.progress;
+
+  // player along route
+  const rp = routePoint(p);
+  C.player.x = rp.x; C.player.y = rp.y; C.player.a = rp.a;
+
+  // trigger pickups once
+  if (!C.fired.ammo && p >= PICKUP_AMMO) {
+    C.fired.ammo = true;
+    const nz = nearestZombie();
+    if (nz) {
+      C.shots.push({ x: nz.x, y: nz.y, t: 0 });
+      const dx = nz.x - C.player.x, dy = nz.y - C.player.y, d = Math.hypot(dx, dy) || 1;
+      nz.x += dx / d * 130; nz.y += dy / d * 130;
+    }
+  }
+  if (!C.fired.slow && p >= PICKUP_SLOW) {
+    C.fired.slow = true;
+    const at = routePoint(PICKUP_SLOW);
+    C.rings.push({ x: at.x, y: at.y, r: 10, maxR: Math.min(C.w, C.h) * 0.34, t: 0, kind: 'slow' });
+    for (const z of C.zombies) if (Math.hypot(z.x - at.x, z.y - at.y) < 240) z.slowUntil = now + 4000;
+  }
+  if (!C.fired.shove && p >= SHOVE_AT) {
+    C.fired.shove = true;
+    C.rings.push({ x: C.player.x, y: C.player.y, r: 10, maxR: 220, t: 0, kind: 'shove' });
+    for (const z of C.zombies) {
+      const dx = z.x - C.player.x, dy = z.y - C.player.y, d = Math.hypot(dx, dy) || 1;
+      z.vx += dx / d * 620; z.vy += dy / d * 620;
+      z.shovedUntil = now + 2200;
+    }
+  }
+  // reset when scrolling back up
+  if (p < 0.05) C.fired = { ammo: false, slow: false, shove: false };
+
+  // zombies chase
+  let nearest = Infinity;
+  for (const z of C.zombies) {
+    const dx = C.player.x - z.x, dy = C.player.y - z.y, d = Math.hypot(dx, dy) || 1;
+    nearest = Math.min(nearest, d);
+    const done = p > 0.96; // escaped: they lose the scent
+    let sp = z.maxSp;
+    if (now < z.slowUntil) sp *= 0.3;
+    if (now < z.shovedUntil) sp *= 0.4;
+    if (!done) {
+      z.vx += (dx / d * sp - z.vx) * Math.min(dt * 2.2, 1);
+      z.vy += (dy / d * sp - z.vy) * Math.min(dt * 2.2, 1);
+    } else {
+      z.vx *= 0.96; z.vy *= 0.96;
+    }
+    z.x += z.vx * dt; z.y += z.vy * dt;
+    if (d < 34 && !done) { z.x -= dx / d * (34 - d); z.y -= dy / d * (34 - d); }
+    z.clock += dt;
+    if (z.clock > 0.1) { z.clock = 0; z.trail.push({ x: z.x, y: z.y }); if (z.trail.length > 6) z.trail.shift(); }
+  }
+
+  // fx aging
+  for (const r of C.rings) { r.t += dt; r.r = Math.min(r.maxR, r.r + dt * 480); }
+  C.rings = C.rings.filter(r => r.r < r.maxR || r.t < 0.5);
+  for (const s of C.shots) s.t += dt;
+  C.shots = C.shots.filter(s => s.t < 0.5);
+
+  // HUD
+  hudTime.textContent = fmtTime(p * 262);
+  hudDist.textContent = `${Math.round(p * 5240).toLocaleString('en-US')} m`;
+  hudNear.textContent = `${Math.max(Math.round(nearest * 1.9), 4)} m`;
+
+  // captions
+  const th = [0, 0.16, 0.4, 0.58, 0.76, 0.93];
+  let active = 0;
+  th.forEach((t, i) => { if (p >= t) active = i; });
+  caps.forEach((c, i) => c.classList.toggle('on', i === active));
+
+  C.lastP = p;
+}
+
+function chaseDraw() {
+  const ctx = C.ctx;
+  ctx.clearRect(0, 0, C.w, C.h);
+  ctx.drawImage(C.map, 0, 0, C.w, C.h);
+
+  // full route: faint dashed
+  ctx.save();
+  ctx.strokeStyle = 'rgba(242,242,242,0.16)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([5, 9]);
+  ctx.beginPath();
+  C.pts.forEach((pt, i) => i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y));
+  ctx.stroke();
+  ctx.restore();
+
+  // completed route: glowing trail
+  const doneLen = C.progress * C.total;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(79,216,224,0.9)';
+  ctx.lineWidth = 3.5;
+  ctx.shadowColor = 'rgba(79,216,224,0.55)';
+  ctx.shadowBlur = 12;
+  ctx.beginPath();
+  let walked = 0;
+  ctx.moveTo(C.pts[0].x, C.pts[0].y);
+  for (const s of C.segs) {
+    if (walked + s.l <= doneLen) { ctx.lineTo(s.b.x, s.b.y); walked += s.l; }
+    else {
+      const t = (doneLen - walked) / s.l;
+      ctx.lineTo(s.a.x + (s.b.x - s.a.x) * t, s.a.y + (s.b.y - s.a.y) * t);
+      break;
+    }
+  }
+  ctx.stroke();
+  ctx.restore();
+
+  // pickups on route
+  if (!C.fired.ammo) {
+    const a = routePoint(PICKUP_AMMO);
+    drawMarker(ctx, ammoImg, a.x, a.y, 34, true, 'rgba(255,194,75,0.22)');
+  }
+  if (!C.fired.slow) {
+    const s = routePoint(PICKUP_SLOW);
+    drawMarker(ctx, slowImg, s.x, s.y, 34, true, 'rgba(178,102,242,0.22)');
+  }
+
+  // zombie trails
+  for (const z of C.zombies) {
+    ctx.fillStyle = 'rgba(255,68,56,0.45)';
+    z.trail.forEach((tp, i) => {
+      ctx.globalAlpha = (i + 1) / z.trail.length * 0.4;
+      ctx.beginPath(); ctx.arc(tp.x, tp.y, 2.6, 0, TAU); ctx.fill();
+    });
+  }
+  ctx.globalAlpha = 1;
+  for (const z of C.zombies) drawMarker(ctx, zombieImg, z.x, z.y, 34, true, 'rgba(255,68,56,0.25)');
+
+  // expanding rings (slow field purple, shove red)
+  for (const r of C.rings) {
+    const fade = 1 - r.t / 1.1;
+    if (fade <= 0) continue;
+    ctx.strokeStyle = r.kind === 'slow' ? `rgba(178,102,242,${0.55 * fade})` : `rgba(255,68,56,${0.6 * fade})`;
+    ctx.lineWidth = r.kind === 'slow' ? 3 : 5;
+    ctx.beginPath(); ctx.arc(r.x, r.y, r.r, 0, TAU); ctx.stroke();
+  }
+
+  // bullet impacts
+  for (const s of C.shots) {
+    const fade = 1 - s.t / 0.5;
+    ctx.strokeStyle = `rgba(255,194,75,${fade})`;
+    ctx.lineWidth = 2.5;
+    for (let i = 0; i < 6; i++) {
+      const a = i / 6 * TAU + s.t * 2;
+      ctx.beginPath();
+      ctx.moveTo(s.x + Math.cos(a) * 10, s.y + Math.sin(a) * 10);
+      ctx.lineTo(s.x + Math.cos(a) * (10 + 16 * fade), s.y + Math.sin(a) * (10 + 16 * fade));
+      ctx.stroke();
+    }
+  }
+
+  // player
+  ctx.save();
+  ctx.translate(C.player.x, C.player.y);
+  ctx.rotate(C.player.a + Math.PI / 2);
+  drawMarker(ctx, playerImg, 0, 0, 30, true, 'rgba(255,255,255,0.2)');
+  ctx.restore();
+}
+
+function nearestZombie() {
+  let best = null, bd = Infinity;
+  for (const z of C.zombies) {
+    const d = Math.hypot(z.x - C.player.x, z.y - C.player.y);
+    if (d < bd) { bd = d; best = z; }
+  }
+  return best;
+}
+
+/* ================================================================
+   main loop
+================================================================ */
+
+function resetAll() { heroReset(); chaseReset(); }
+resetAll();
+
+addEventListener('resize', () => { clearTimeout(resetAll._t); resetAll._t = setTimeout(resetAll, 180); });
+
+new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }, { threshold: 0.02 }).observe(heroCv);
+new IntersectionObserver(es => { chaseVisible = es[0].isIntersecting; }, { threshold: 0.02 }).observe(chaseSec);
+
+addEventListener('pointermove', e => {
+  if (!hero) return;
+  hero.par.tx = (e.clientX / innerWidth - 0.5) * 26;
+  hero.par.ty = (e.clientY / innerHeight - 0.5) * 18;
+}, { passive: true });
+
+// reveal-on-scroll
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+let last = performance.now();
+function frame(now) {
+  const dt = Math.min((now - last) / 1000, 0.05);
+  last = now;
+  if (!document.hidden) {
+    if (heroVisible && hero) {
+      if (REDUCED) { if (!hero._done) { heroStep(0.016); heroDraw(); hero._done = true; } }
+      else { heroStep(dt); heroDraw(); }
+    }
+    if (chaseVisible && C) {
+      if (REDUCED) { if (!C._done) { chaseStep(0.016, now); chaseDraw(); C._done = true; } }
+      else { chaseStep(dt, now); chaseDraw(); }
+    }
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+})();
+</script>
 </body>
 </html>
