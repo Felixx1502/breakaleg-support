@@ -657,7 +657,7 @@
 <body>
 
 <nav>
-  <div class="wordmark"><img src="assets/favicon.png" alt="" />BREAK A LEG !!</div>
+  <div class="wordmark"><img src="assets/logo.png" alt="" />BREAK A LEG !!</div>
   <div class="links">
     <a href="#how">How it works</a>
     <a href="#chase">The chase</a>
@@ -1123,7 +1123,7 @@ const hudDist = document.getElementById('hudDist');
 const hudNear = document.getElementById('hudNear');
 const caps = [...document.querySelectorAll('.chase-caption .cap')];
 
-chaseSec.style.height = REDUCED ? '100vh' : '460vh';
+chaseSec.style.height = '460vh';
 
 let C = null; // chase state
 let chaseVisible = false;
@@ -1187,9 +1187,7 @@ function routePoint(p) {
 }
 
 function chaseScroll() {
-  const r = chaseSec.getBoundingClientRect();
-  const span = r.height - window.innerHeight;
-  C.progress = Math.min(Math.max(-r.top / Math.max(span, 1), 0), 1);
+  C.progress = Math.min(Math.max((window.scrollY - chaseTop) / chaseSpan, 0), 1);
   const dbg = new URLSearchParams(location.search).get('p'); // debug: fixed progress
   if (dbg !== null) C.progress = Math.min(Math.max(parseFloat(dbg) || 0, 0), 1);
 }
@@ -1383,13 +1381,45 @@ function nearestZombie() {
    main loop
 ================================================================ */
 
-function resetAll() { heroReset(); chaseReset(); }
+let chaseTop = 0, chaseSpan = 1;
+
+function resetAll() { heroReset(); chaseReset(); measureChase(); updateVisibility(); }
 resetAll();
 
-addEventListener('resize', () => { clearTimeout(resetAll._t); resetAll._t = setTimeout(resetAll, 180); });
+let resizeT = 0;
+addEventListener('resize', () => {
+  clearTimeout(resizeT);
+  resizeT = setTimeout(() => { resetAll(); }, 180);
+});
 
-new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }, { threshold: 0.02 }).observe(heroCv);
-new IntersectionObserver(es => { chaseVisible = es[0].isIntersecting; }, { threshold: 0.02 }).observe(chaseSec);
+// visibility from geometry, updated on scroll/resize — no IntersectionObserver dependency
+function updateVisibility() {
+  const hr = heroCv.getBoundingClientRect();
+  heroVisible = hr.bottom > 0 && hr.top < innerHeight;
+  const cr = chaseSec.getBoundingClientRect();
+  chaseVisible = cr.bottom > -40 && cr.top < innerHeight + 40;
+}
+
+// chase progress straight from scroll position
+function measureChase() {
+  const top = chaseSec.offsetTop;
+  const span = Math.max(chaseSec.offsetHeight - innerHeight, 1);
+  chaseTop = top; chaseSpan = span;
+}
+
+let scrollTick = false;
+addEventListener('scroll', () => {
+  if (scrollTick) return;
+  scrollTick = true;
+  requestAnimationFrame(() => {
+    scrollTick = false;
+    updateVisibility();
+    if (C) {
+      chaseScroll();
+      if (REDUCED) { chaseStep(0.016, performance.now()); chaseDraw(); } // scrubbed, no free-running motion
+    }
+  });
+}, { passive: true });
 
 addEventListener('pointermove', e => {
   if (!hero) return;
@@ -1405,21 +1435,27 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 let last = performance.now();
 function frame(now) {
-  const dt = Math.min((now - last) / 1000, 0.05);
-  last = now;
-  if (!document.hidden) {
-    if (heroVisible && hero) {
-      if (REDUCED) { if (!hero._done) { heroStep(0.016); heroDraw(); hero._done = true; } }
-      else { heroStep(dt); heroDraw(); }
+  requestAnimationFrame(frame); // schedule first so the loop survives a bad frame
+  try {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    if (!document.hidden) {
+      if (heroVisible && hero) {
+        if (REDUCED) { if (!hero._done) { heroStep(0.016); heroDraw(); hero._done = true; } }
+        else { heroStep(dt); heroDraw(); }
+      }
+      if (chaseVisible && C && !REDUCED) { // REDUCED mode is driven by the scroll handler instead
+        chaseScroll(); chaseStep(dt, now); chaseDraw();
+      }
     }
-    if (chaseVisible && C) {
-      if (REDUCED) { if (!C._done) { chaseStep(0.016, now); chaseDraw(); C._done = true; } }
-      else { chaseStep(dt, now); chaseDraw(); }
-    }
+  } catch (err) {
+    console.error('frame error', err);
   }
-  requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+
+// reduced-motion users get one painted frame before their first scroll
+if (REDUCED && C) { updateVisibility(); if (chaseVisible) { chaseScroll(); chaseStep(0.016, performance.now()); chaseDraw(); } }
 
 })();
 </script>
